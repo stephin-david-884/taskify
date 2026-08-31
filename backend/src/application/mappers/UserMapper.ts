@@ -22,7 +22,7 @@ export const toPersistenceUser = (user: User) => {
         email: user.email,
         password: user.getPassword(),
         role: user.role,
-        teamId: new Types.ObjectId(user.teamId) ?? null,
+        teamId: user.teamId ? new Types.ObjectId(user.teamId) : null,
         refreshTokens: user.getRefreshTokens(),
     };
 };
