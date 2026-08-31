@@ -14,6 +14,8 @@ import { AuthController } from "../../interfaces/controllers/auth/AuthController
 import { IRegisterUserUsecase } from "../../application/interfaces/usecases/auth/IRegisterUserUsecase";
 import { UserRepository } from "../respositories/UserRepository";
 import { TeamRepository } from "../respositories/TeamRepository";
+import { ILoginUsecase } from "../../application/interfaces/usecases/auth/ILoginUsecase";
+import { LoginUser } from "../../application/usecases/auth/LoginUser";
 
 // Repositories
 const userRepository = new UserRepository();
@@ -30,7 +32,16 @@ const registerUser: IRegisterUserUsecase = new RegisterUser(
   tokenService,
 );
 
+const loginUser: ILoginUsecase = new LoginUser(
+  userRepository,
+  tokenService,
+  hashService,
+);
+
 // Controller
-export const authController = new AuthController(registerUser);
+export const authController = new AuthController(
+  registerUser,
+  loginUser,
+);
 
 export { tokenService };
