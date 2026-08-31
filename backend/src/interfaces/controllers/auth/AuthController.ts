@@ -11,6 +11,7 @@ import { AppError } from "../../../domain/errors/AppError";
 import { IRefreshTokenUseCase } from "../../../application/interfaces/usecases/auth/IRefreshTokenUseCase";
 import { IGetCurrentUserUseCase } from "../../../application/interfaces/usecases/auth/IGetCurrentUserUseCase";
 import { ILogoutUseCase } from "../../../application/interfaces/usecases/auth/ILogoutUseCase";
+import { IGetLeadsUsecase } from "../../../application/interfaces/usecases/auth/IGetLeadsUsecase";
 
 export class AuthController {
     constructor(
@@ -19,6 +20,7 @@ export class AuthController {
         private readonly _refreshToken: IRefreshTokenUseCase,
         private readonly _getCurrentUser: IGetCurrentUserUseCase,
         private readonly _logout: ILogoutUseCase,
+        private readonly _getLeads: IGetLeadsUsecase,
     ) { }
 
     register = asyncHandler(async (req: Request, res: Response) => {
@@ -146,6 +148,17 @@ export class AuthController {
             res,
             statusCode.OK,
             "Logged out successfully",
+        );
+    });
+
+    getLeads = asyncHandler(async (_req: Request, res: Response) => {
+        const result = await this._getLeads.execute();
+
+        return sendSuccess(
+            res,
+            statusCode.OK,
+            "Leads fetched successfully",
+            result,
         );
     });
 }

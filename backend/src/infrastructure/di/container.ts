@@ -22,6 +22,8 @@ import { IGetCurrentUserUseCase } from "../../application/interfaces/usecases/au
 import { GetCurrentUser } from "../../application/usecases/auth/GetCurrentUser.auth";
 import { ILogoutUseCase } from "../../application/interfaces/usecases/auth/ILogoutUseCase";
 import { Logout } from "../../application/usecases/auth/Logout.auth";
+import { IGetLeadsUsecase } from "../../application/interfaces/usecases/auth/IGetLeadsUsecase";
+import { GetLeads } from "../../application/usecases/auth/GetLeads.auth";
 
 // Repositories
 const userRepository = new UserRepository();
@@ -59,13 +61,18 @@ const logout: ILogoutUseCase = new Logout(
   hashService,
 );
 
+const getLeads: IGetLeadsUsecase = new GetLeads(
+  userRepository,
+);
+
 // Controller
 export const authController = new AuthController(
   registerUser,
   loginUser,
   refreshToken,
   getCurrentUser,
-  logout
+  logout,
+  getLeads
 );
 
 export { tokenService };

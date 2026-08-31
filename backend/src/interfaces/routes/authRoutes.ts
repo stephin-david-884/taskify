@@ -37,4 +37,9 @@ router.post(
   authController.logout,
 );
 
+router.get(
+  ROUTES.AUTH.GET_LEADS,
+  authController.getLeads,
+);
+
 export default router;

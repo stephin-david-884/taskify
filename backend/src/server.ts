@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./interfaces/routes/authRoutes";
+import { errorHandler } from "./interfaces/middlewares/errorHandler";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

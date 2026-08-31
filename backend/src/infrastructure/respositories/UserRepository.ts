@@ -1,13 +1,12 @@
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
-import { User } from "../../domain/entities/User.entity";
+import { User, UserRole } from "../../domain/entities/User.entity";
 import { UserLean, UserModel } from "../database/models/User";
 import { BaseRepository } from "./BaseRepository";
 import { toDomainUser, toPersistenceUser } from "../../application/mappers/UserMapper";
 
 export class UserRepository
   extends BaseRepository<User, UserLean>
-  implements IUserRepository
-{
+  implements IUserRepository {
   constructor() {
     super(
       UserModel,
@@ -40,5 +39,14 @@ export class UserRepository
     }
 
     return toDomainUser(user);
+  }
+
+  async findLeads(): Promise<User[]> {
+    const users = await this._model
+      .find({ role: UserRole.LEAD })
+      .sort({ name: 1 })
+      .lean();
+
+    return users.map(toDomainUser);
   }
 }
