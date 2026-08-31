@@ -32,4 +32,9 @@ router.get(
   authController.getCurrentUser,
 );
 
+router.post(
+  ROUTES.AUTH.LOGOUT,
+  authController.logout,
+);
+
 export default router;

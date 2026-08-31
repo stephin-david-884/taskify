@@ -10,6 +10,7 @@ import { mapLoginRequest } from "../../../application/mappers/auth/LoginRequestM
 import { AppError } from "../../../domain/errors/AppError";
 import { IRefreshTokenUseCase } from "../../../application/interfaces/usecases/auth/IRefreshTokenUseCase";
 import { IGetCurrentUserUseCase } from "../../../application/interfaces/usecases/auth/IGetCurrentUserUseCase";
+import { ILogoutUseCase } from "../../../application/interfaces/usecases/auth/ILogoutUseCase";
 
 export class AuthController {
     constructor(
@@ -17,6 +18,7 @@ export class AuthController {
         private readonly _loginUseCase: ILoginUsecase,
         private readonly _refreshToken: IRefreshTokenUseCase,
         private readonly _getCurrentUser: IGetCurrentUserUseCase,
+        private readonly _logout: ILogoutUseCase,
     ) { }
 
     register = asyncHandler(async (req: Request, res: Response) => {
@@ -111,13 +113,39 @@ export class AuthController {
             throw new AppError("Unauthorized", statusCode.UNAUTHORIZED);
         }
 
-        const user = await this._getCurrentUser.execute( req.user.userId );
+        const user = await this._getCurrentUser.execute(req.user.userId);
 
         return sendSuccess(
             res,
             statusCode.OK,
             "User fetched successfully",
             { user },
+        );
+    });
+
+    logout = asyncHandler(async (req: Request, res: Response) => {
+        const refreshToken = req.cookies.refreshToken;
+
+        if (refreshToken) {
+            await this._logout.execute({
+                refreshToken,
+            });
+        }
+
+        res.clearCookie(
+            "accessToken",
+            authCookieConfig.accessToken,
+        );
+
+        res.clearCookie(
+            "refreshToken",
+            authCookieConfig.refreshToken,
+        );
+
+        return sendSuccess(
+            res,
+            statusCode.OK,
+            "Logged out successfully",
         );
     });
 }
