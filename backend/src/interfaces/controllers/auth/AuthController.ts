@@ -9,12 +9,14 @@ import { ILoginUsecase } from "../../../application/interfaces/usecases/auth/ILo
 import { mapLoginRequest } from "../../../application/mappers/auth/LoginRequestMapper";
 import { AppError } from "../../../domain/errors/AppError";
 import { IRefreshTokenUseCase } from "../../../application/interfaces/usecases/auth/IRefreshTokenUseCase";
+import { IGetCurrentUserUseCase } from "../../../application/interfaces/usecases/auth/IGetCurrentUserUseCase";
 
 export class AuthController {
     constructor(
         private readonly _registerUseCase: IRegisterUserUsecase,
         private readonly _loginUseCase: ILoginUsecase,
         private readonly _refreshToken: IRefreshTokenUseCase,
+        private readonly _getCurrentUser: IGetCurrentUserUseCase,
     ) { }
 
     register = asyncHandler(async (req: Request, res: Response) => {
@@ -101,6 +103,21 @@ export class AuthController {
             res,
             statusCode.OK,
             "Tokens refreshed successfully",
+        );
+    });
+
+    getCurrentUser = asyncHandler(async (req: Request, res: Response) => {
+        if (!req.user) {
+            throw new AppError("Unauthorized", statusCode.UNAUTHORIZED);
+        }
+
+        const user = await this._getCurrentUser.execute( req.user.userId );
+
+        return sendSuccess(
+            res,
+            statusCode.OK,
+            "User fetched successfully",
+            { user },
         );
     });
 }

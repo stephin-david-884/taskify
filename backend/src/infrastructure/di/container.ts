@@ -18,6 +18,8 @@ import { ILoginUsecase } from "../../application/interfaces/usecases/auth/ILogin
 import { LoginUser } from "../../application/usecases/auth/LoginUser";
 import { IRefreshTokenUseCase } from "../../application/interfaces/usecases/auth/IRefreshTokenUseCase";
 import { RefreshToken } from "../../application/usecases/auth/RefreshToken.auth";
+import { IGetCurrentUserUseCase } from "../../application/interfaces/usecases/auth/IGetCurrentUserUseCase";
+import { GetCurrentUser } from "../../application/usecases/auth/GetCurrentUser.auth";
 
 // Repositories
 const userRepository = new UserRepository();
@@ -46,11 +48,15 @@ const refreshToken: IRefreshTokenUseCase = new RefreshToken(
   hashService,
 );
 
+const getCurrentUser: IGetCurrentUserUseCase =
+  new GetCurrentUser(userRepository);
+
 // Controller
 export const authController = new AuthController(
   registerUser,
   loginUser,
-  refreshToken
+  refreshToken,
+  getCurrentUser
 );
 
 export { tokenService };
