@@ -35,7 +35,7 @@ export default [
       ],
       "@typescript-eslint/explicit-function-return-type": "off",
 
-      "no-console": "error",
+      "no-console": "off",
       "no-process-env": "off",
     },
   },

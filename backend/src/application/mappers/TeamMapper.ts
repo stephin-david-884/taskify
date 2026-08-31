@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { Team } from "../../domain/entities/Team.entity";
 import { TeamLean } from "../../infrastructure/database/models/Team";
 
@@ -12,6 +13,6 @@ export const toDomainTeam = (dbTeam: TeamLean): Team => {
 export const toPersistenceTeam = (team: Team) => {
   return {
     name: team.name,
-    leadId: team.leadId,
+    leadId: new Types.ObjectId(team.leadId),
   };
 };

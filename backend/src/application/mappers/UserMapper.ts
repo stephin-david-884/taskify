@@ -1,4 +1,5 @@
-import { User, UserRole } from "../../domain/entities/User.entity";
+import { Types } from "mongoose";
+import { User} from "../../domain/entities/User.entity";
 import { UserLean } from "../../infrastructure/database/models/User";
 
 export const toDomainUser = (dbUser: UserLean): User => {
@@ -21,7 +22,7 @@ export const toPersistenceUser = (user: User) => {
         email: user.email,
         password: user.getPassword(),
         role: user.role,
-        teamId: user.teamId ?? null,
+        teamId: new Types.ObjectId(user.teamId) ?? null,
         refreshTokens: user.getRefreshTokens(),
     };
 };
