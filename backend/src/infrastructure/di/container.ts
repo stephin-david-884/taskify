@@ -16,6 +16,8 @@ import { UserRepository } from "../respositories/UserRepository";
 import { TeamRepository } from "../respositories/TeamRepository";
 import { ILoginUsecase } from "../../application/interfaces/usecases/auth/ILoginUsecase";
 import { LoginUser } from "../../application/usecases/auth/LoginUser";
+import { IRefreshTokenUseCase } from "../../application/interfaces/usecases/auth/IRefreshTokenUseCase";
+import { RefreshToken } from "../../application/usecases/auth/RefreshToken.auth";
 
 // Repositories
 const userRepository = new UserRepository();
@@ -38,10 +40,17 @@ const loginUser: ILoginUsecase = new LoginUser(
   hashService,
 );
 
+const refreshToken: IRefreshTokenUseCase = new RefreshToken(
+  userRepository,
+  tokenService,
+  hashService,
+);
+
 // Controller
 export const authController = new AuthController(
   registerUser,
   loginUser,
+  refreshToken
 );
 
 export { tokenService };

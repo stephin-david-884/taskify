@@ -2,7 +2,7 @@ export const ROUTES = {
   AUTH: {
     REGISTER: "/register",
     LOGIN: "/login",
-    REFRESH_TOKEN: "/refresh",
+    REFRESH_TOKEN: "/refresh-token",
     LOGOUT: "/logout",
     GET_ME: "/me",
     GET_LEADS: "/leads",

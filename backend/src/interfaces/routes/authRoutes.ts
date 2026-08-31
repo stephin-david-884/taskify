@@ -20,4 +20,9 @@ router.post(
   authController.login,
 );
 
+router.post(
+  ROUTES.AUTH.REFRESH_TOKEN,
+  authController.refreshToken,
+);
+
 export default router;
