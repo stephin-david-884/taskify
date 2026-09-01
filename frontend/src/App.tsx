@@ -1,19 +1,22 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 import Spinner from "./presentation/components/common/Spinner";
 
 import PublicRoute from "./presentation/routes/PublicRoute";
 import AuthGateway from "./presentation/pages/auth/AuthGateway";
 import { useAuth } from "./hooks/useAuth";
+import UserProtectedRoute from "./presentation/routes/UserProtectedRoute";
+const Dashboard = lazy(() => import('./presentation/pages/dashboard/Dashboard'));
+const Tasks = lazy(() => import('./presentation/pages/task/Task'));
 
 const App = () => {
 
-  const {checkAuth} = useAuth();
+  const { checkAuth } = useAuth();
 
   useEffect(() => {
     checkAuth();
-  },[checkAuth])
+  }, [checkAuth])
 
   return (
     <>
@@ -23,7 +26,7 @@ const App = () => {
           <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-primary-600"></div>
         </div>
       }>
-        
+
         <Routes>
           <Route path="/register"
             element={
@@ -41,6 +44,13 @@ const App = () => {
               </PublicRoute>
             }
           />
+
+          <Route element={<UserProtectedRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/tasks" element={<Tasks />} />
+          </Route>
+
+
         </Routes>
       </Suspense>
     </>
