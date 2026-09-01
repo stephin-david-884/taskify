@@ -1,3 +1,1 @@
-export interface GetTasksDTO {
-    
-}
+export type GetTasksDTO = Record<string, never>;

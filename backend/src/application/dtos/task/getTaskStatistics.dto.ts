@@ -1,4 +1,4 @@
-export interface GetTaskStatisticsDTO {}
+export type GetTaskStatisticsDTO = Record<string, never>;
 
 export interface TaskStatistics {
     total: number;

@@ -2,14 +2,18 @@ import { Server } from "socket.io";
 import { IRealtimeService } from "../../../application/interfaces/services/task/IRealtimeService";
 
 export class SocketIORealtimeService implements IRealtimeService {
-  constructor(private readonly io: Server) {}
+  private io: Server | null = null;
+
+  attach(io: Server): void {
+    this.io = io;
+  }
 
   emitToTeam(
     teamId: string,
     event: string,
     data: unknown,
   ): void {
-    this.io.to(`team:${teamId}`).emit(event, data);
+    this.io?.to(`team:${teamId}`).emit(event, data);
   }
 
   emitToUser(
@@ -17,6 +21,6 @@ export class SocketIORealtimeService implements IRealtimeService {
     event: string,
     data: unknown,
   ): void {
-    this.io.to(`user:${userId}`).emit(event, data);
+    this.io?.to(`user:${userId}`).emit(event, data);
   }
 }

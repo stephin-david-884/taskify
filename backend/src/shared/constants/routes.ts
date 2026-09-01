@@ -9,7 +9,12 @@ export const ROUTES = {
   },
 
   TASK: {
-    ROOT: "/",
-    STATS: "/stats",
+    CREATE: "/",
+    GET_ALL: "/",
+    GET_BY_ID: "/:taskId",
+    UPDATE: "/:taskId",
+    UPDATE_STATUS: "/:taskId/status",
+    DELETE: "/:taskId",
+    STATISTICS: "/statistics",
   },
 } as const;

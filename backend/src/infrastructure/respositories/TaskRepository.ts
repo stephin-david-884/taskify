@@ -27,7 +27,7 @@ export class TaskRepository
 
     async findByAssigneeId(memberId: string): Promise<Task[]> {
         const tasks = await this._model
-            .find({ assigneeId: memberId })
+            .find({ assignedTo: memberId })
             .sort({ createdAt: -1 })
             .lean();
 
