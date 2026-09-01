@@ -306,17 +306,14 @@ const authSlice = createSlice({
             })
 
             .addCase(getLeads.pending, (state) => {
-                state.loading = true;
                 state.error = null;
             })
 
             .addCase(getLeads.fulfilled, (state, action) => {
-                state.loading = false;
                 state.leads = action.payload.leads;
             })
 
             .addCase(getLeads.rejected, (state, action) => {
-                state.loading = false;
                 state.error = action.payload || "Failed to fetch leads";
             })
     },
