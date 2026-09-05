@@ -7,6 +7,7 @@ import {
     clearError,
     getCurrentUser,
     getLeads,
+    getTeamMembers,
     loginUser,
     logoutUser,
     refreshToken,
@@ -28,6 +29,7 @@ export const useAuth = () => {
         error,
         initialized,
         leads,
+        teamMembers,
     } = useSelector((state: RootState) => state.auth);
 
     const handleClearError = useCallback(() => {
@@ -80,6 +82,13 @@ export const useAuth = () => {
         [dispatch]
     );
 
+    const fetchTeamMembers = useCallback(
+        async () => {
+            return dispatch(getTeamMembers()).unwrap();
+        },
+        [dispatch]
+    );
+
     return {
         user,
         isAuthenticated,
@@ -87,6 +96,7 @@ export const useAuth = () => {
         error,
         initialized,
         leads,
+        teamMembers,
 
         clearError: handleClearError,
 
@@ -96,5 +106,6 @@ export const useAuth = () => {
         checkAuth,
         logout,
         fetchLeads,
+        fetchTeamMembers,
     };
 };

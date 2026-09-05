@@ -12,6 +12,7 @@ import { IRefreshTokenUseCase } from "../../../application/interfaces/usecases/a
 import { IGetCurrentUserUseCase } from "../../../application/interfaces/usecases/auth/IGetCurrentUserUseCase";
 import { ILogoutUseCase } from "../../../application/interfaces/usecases/auth/ILogoutUseCase";
 import { IGetLeadsUsecase } from "../../../application/interfaces/usecases/auth/IGetLeadsUsecase";
+import { IGetTeamMembersUseCase } from "../../../application/interfaces/usecases/auth/IGetTeamMembersUseCase";
 
 export class AuthController {
     constructor(
@@ -21,6 +22,7 @@ export class AuthController {
         private readonly _getCurrentUser: IGetCurrentUserUseCase,
         private readonly _logout: ILogoutUseCase,
         private readonly _getLeads: IGetLeadsUsecase,
+        private readonly _getTeamMembers: IGetTeamMembersUseCase,
     ) { }
 
     register = asyncHandler(async (req: Request, res: Response) => {
@@ -158,6 +160,21 @@ export class AuthController {
             res,
             statusCode.OK,
             "Leads fetched successfully",
+            result,
+        );
+    });
+
+    getTeamMembers = asyncHandler(async (req: Request, res: Response) => {
+        if (!req.user) {
+            throw new AppError("Unauthorized", statusCode.UNAUTHORIZED);
+        }
+
+        const result = await this._getTeamMembers.execute(req.user.userId);
+
+        return sendSuccess(
+            res,
+            statusCode.OK,
+            "Team members fetched successfully",
             result,
         );
     });

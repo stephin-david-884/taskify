@@ -49,4 +49,13 @@ export class UserRepository
 
     return users.map(toDomainUser);
   }
+
+  async findMembersByTeamId(teamId: string): Promise<User[]> {
+    const users = await this._model
+      .find({ teamId, role: UserRole.MEMBER })
+      .sort({ name: 1 })
+      .lean();
+
+    return users.map(toDomainUser);
+  }
 }

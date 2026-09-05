@@ -57,6 +57,18 @@ export interface GetLeadsResponse {
   leads: Lead[];
 }
 
+export interface TeamMember {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  teamId?: string;
+}
+
+export interface GetTeamMembersResponse {
+  members: TeamMember[];
+}
+
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
@@ -64,4 +76,5 @@ export interface AuthState {
   error: string | null;
   initialized: boolean;
   leads: Lead[];
+  teamMembers: TeamMember[];
 }

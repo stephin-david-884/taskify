@@ -10,4 +10,5 @@ export interface IUserRepository extends IBaseRepository<User> {
   //   search?: string,
   // ): Promise<{ users: User[]; total: number }>;
   findLeads(): Promise<User[]>;
+  findMembersByTeamId(teamId: string): Promise<User[]>;
 }

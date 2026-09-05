@@ -6,6 +6,7 @@ export const ROUTES = {
     LOGOUT: "/logout",
     GET_ME: "/me",
     GET_LEADS: "/leads",
+    GET_TEAM_MEMBERS: "/team-members",
   },
 
   TASK: {

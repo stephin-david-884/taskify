@@ -42,4 +42,10 @@ router.get(
   authController.getLeads,
 );
 
+router.get(
+  ROUTES.AUTH.GET_TEAM_MEMBERS,
+  authMiddleware(tokenService),
+  authController.getTeamMembers,
+);
+
 export default router;

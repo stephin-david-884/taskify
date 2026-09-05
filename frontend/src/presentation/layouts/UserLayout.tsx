@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { useSocket } from "../../hooks/useSocket";
 
 interface UserLayoutProps {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 const UserLayout = ({ children }: UserLayoutProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    useSocket();
 
     const toggleSidebar = () => {
         setIsSidebarOpen((previous) => !previous);

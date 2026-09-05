@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import { API_ROUTES } from "../../constants/api.routes";
 import type { AxiosError } from "axios";
-import type { AuthState, GetLeadsResponse, LoginPayload, LoginResponse, RefreshTokenResponse, RegisterPayload, RegisterResponse, User } from "../../types/user";
+import type { AuthState, GetLeadsResponse, GetTeamMembersResponse, LoginPayload, LoginResponse, RefreshTokenResponse, RegisterPayload, RegisterResponse, User } from "../../types/user";
 import api from "../../lib/axios";
 
 const initialState: AuthState = {
@@ -12,6 +12,7 @@ const initialState: AuthState = {
     error: null,
     initialized: false,
     leads: [],
+    teamMembers: [],
 };
 
 export const registerUser = createAsyncThunk<
@@ -192,6 +193,37 @@ export const getLeads = createAsyncThunk<
     }
 );
 
+export const getTeamMembers = createAsyncThunk<
+    GetTeamMembersResponse,
+    void,
+    { rejectValue: string }
+>(
+    "auth/getTeamMembers",
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await api.get(
+                API_ROUTES.AUTH.GET_TEAM_MEMBERS
+            );
+
+            if (!response.data.success) {
+                return rejectWithValue(
+                    response.data.message || "Failed to fetch team members"
+                );
+            }
+
+            return {
+                members: response.data.data.members,
+            };
+        } catch (error) {
+            const err = error as AxiosError<{ message: string }>;
+
+            return rejectWithValue(
+                err.response?.data?.message || "Failed to fetch team members"
+            );
+        }
+    }
+);
+
 const authSlice = createSlice({
     name: "auth",
     initialState,
@@ -315,6 +347,18 @@ const authSlice = createSlice({
 
             .addCase(getLeads.rejected, (state, action) => {
                 state.error = action.payload || "Failed to fetch leads";
+            })
+
+            .addCase(getTeamMembers.pending, (state) => {
+                state.error = null;
+            })
+
+            .addCase(getTeamMembers.fulfilled, (state, action) => {
+                state.teamMembers = action.payload.members;
+            })
+
+            .addCase(getTeamMembers.rejected, (state, action) => {
+                state.error = action.payload || "Failed to fetch team members";
             })
     },
 });

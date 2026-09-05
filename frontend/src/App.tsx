@@ -1,8 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
-import Spinner from "./presentation/components/common/Spinner";
-
 import PublicRoute from "./presentation/routes/PublicRoute";
 import AuthGateway from "./presentation/pages/auth/AuthGateway";
 import { useAuth } from "./hooks/useAuth";

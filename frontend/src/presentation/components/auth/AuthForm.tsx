@@ -153,7 +153,7 @@ const AuthForm = ({ mode }: AuthFormProps) => {
                 navigate("/dashboard");
             }
         } catch {
-            
+            // Error state is captured and displayed from auth Redux state
         }
     };
 

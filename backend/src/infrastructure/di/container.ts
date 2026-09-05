@@ -125,6 +125,14 @@ const getTaskStatistics: IGetTaskStatisticsUseCase = new GetTaskStatistics(
   userRepository,
 );
 
+import { IGetTeamMembersUseCase } from "../../application/interfaces/usecases/auth/IGetTeamMembersUseCase";
+import { GetTeamMembers } from "../../application/usecases/auth/GetTeamMembers.auth";
+
+// ... rest of imports
+const getTeamMembers: IGetTeamMembersUseCase = new GetTeamMembers(
+  userRepository,
+);
+
 // Controller
 export const authController = new AuthController(
   registerUser,
@@ -132,7 +140,8 @@ export const authController = new AuthController(
   refreshToken,
   getCurrentUser,
   logout,
-  getLeads
+  getLeads,
+  getTeamMembers,
 );
 
 export const taskController = new TaskController(
