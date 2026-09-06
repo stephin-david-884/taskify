@@ -5,7 +5,7 @@ const isProduction = env.NODE_ENV === "production";
 const baseCookieConfig = {
   httpOnly: true,
   secure: isProduction,
-  sameSite: "lax" as const,
+  sameSite: isProduction ? ("none" as const) : ("lax" as const),
 };
 
 export const authCookieConfig = {
