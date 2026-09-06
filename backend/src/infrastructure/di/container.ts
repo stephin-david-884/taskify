@@ -1,13 +1,10 @@
 import "../config/env";
 
-// Services
 import { HashService } from "../services/auth/HashService";
 import { TokenService } from "../services/auth/TokenService";
 
-// Use cases
 import { RegisterUser } from "../../application/usecases/auth/RegisterUser";
 
-// Controller
 import { AuthController } from "../../interfaces/controllers/auth/AuthController";
 
 // Interfaces
@@ -42,6 +39,9 @@ import { DeleteTask } from "../../application/usecases/task/DeleteTask";
 import { IGetTaskStatisticsUseCase } from "../../application/interfaces/usecases/task/IGetTaskStatisticsUseCase";
 import { GetTaskStatistics } from "../../application/usecases/task/GetTaskStatistics";
 import { TaskController } from "../../interfaces/controllers/task/TaskController";
+import { IGetTeamMembersUseCase } from "../../application/interfaces/usecases/auth/IGetTeamMembersUseCase";
+import { GetTeamMembers } from "../../application/usecases/auth/GetTeamMembers.auth";
+import { TaskResponseService } from "../services/task/TaskResponseService";
 
 // Repositories
 const userRepository = new UserRepository();
@@ -133,11 +133,8 @@ const getTaskStatistics: IGetTaskStatisticsUseCase = new GetTaskStatistics(
   userRepository,
 );
 
-import { IGetTeamMembersUseCase } from "../../application/interfaces/usecases/auth/IGetTeamMembersUseCase";
-import { GetTeamMembers } from "../../application/usecases/auth/GetTeamMembers.auth";
-import { TaskResponseService } from "../services/task/TaskResponseService";
 
-// ... rest of imports
+
 const getTeamMembers: IGetTeamMembersUseCase = new GetTeamMembers(
   userRepository,
 );
