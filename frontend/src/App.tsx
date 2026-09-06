@@ -5,6 +5,7 @@ import PublicRoute from "./presentation/routes/PublicRoute";
 import AuthGateway from "./presentation/pages/auth/AuthGateway";
 import { useAuth } from "./hooks/useAuth";
 import UserProtectedRoute from "./presentation/routes/UserProtectedRoute";
+const Home = lazy(() => import('./presentation/pages/home/Home'));
 const Dashboard = lazy(() => import('./presentation/pages/dashboard/Dashboard'));
 const Tasks = lazy(() => import('./presentation/pages/task/Task'));
 
@@ -26,6 +27,7 @@ const App = () => {
       }>
 
         <Routes>
+          <Route path="/" element={<Home />}/>
           <Route path="/register"
             element={
               <PublicRoute>
