@@ -1,4 +1,3 @@
-import { Task } from "../../../../domain/entities/Task.entity";
 import { GetTaskDTO } from "../../../dtos/task/getTask.dto";
 import { TaskResponseDTO } from "../../../dtos/task/taskResponse.dto";
 

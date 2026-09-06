@@ -26,7 +26,7 @@ const CreateTaskModal = ({ isOpen, onClose }: CreateTaskModalProps) => {
 
   useEffect(() => {
     if (isOpen) {
-      fetchTeamMembers().catch(() => {});
+      fetchTeamMembers().catch(() => { });
     }
   }, [isOpen, fetchTeamMembers]);
 
@@ -48,6 +48,11 @@ const CreateTaskModal = ({ isOpen, onClose }: CreateTaskModalProps) => {
 
     if (!description.trim()) {
       setFormError("Description is required");
+      return;
+    }
+
+    if (dueDate && dueDate < getTodayDate()) {
+      setFormError("Due date cannot be in the past");
       return;
     }
 
@@ -89,6 +94,16 @@ const CreateTaskModal = ({ isOpen, onClose }: CreateTaskModalProps) => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const getTodayDate = () => {
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -180,6 +195,7 @@ const CreateTaskModal = ({ isOpen, onClose }: CreateTaskModalProps) => {
                 <input
                   type="date"
                   value={dueDate}
+                  min={getTodayDate()}
                   onChange={(e) => setDueDate(e.target.value)}
                   className="w-full rounded-xl border border-neutral-200 px-3.5 py-2 text-sm text-neutral-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                 />

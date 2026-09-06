@@ -1,4 +1,3 @@
-import { Task } from "../../../domain/entities/Task.entity";
 import { AppError } from "../../../domain/errors/AppError";
 import { ITaskRepository } from "../../../domain/repositories/ITaskRepository";
 import { ITeamRepository } from "../../../domain/repositories/ITeamRepository";
