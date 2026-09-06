@@ -4,19 +4,22 @@ import { IUserRepository } from "../../../domain/repositories/IUserRepository";
 import { statusCode } from "../../constants/enums/statusCode";
 import { IRealtimeService } from "../../interfaces/services/task/IRealtimeService";
 import { UpdateTaskDTO } from "../../dtos/task/updateTask.dto";
-import { IUpdateTaskUseCase } from "../../interfaces/services/task/IUpdateTaskUseCase";
+import { IUpdateTaskUseCase } from "../../interfaces/usecases/task/IUpdateTaskUseCase";
+import { ITaskResponseService } from "../../interfaces/services/task/ITaskResponseService";
+import { TaskResponseDTO } from "../../dtos/task/taskResponse.dto";
 
 export class UpdateTask implements IUpdateTaskUseCase {
     constructor(
         private readonly taskRepository: ITaskRepository,
         private readonly userRepository: IUserRepository,
         private readonly realtimeService: IRealtimeService,
-    ) {}
+        private readonly taskResponseService: ITaskResponseService,
+    ) { }
 
     async execute(
         data: UpdateTaskDTO,
         userId: string,
-    ) {
+    ): Promise<TaskResponseDTO> {
         const lead = await this.userRepository.findById(userId);
 
         if (!lead) {
@@ -105,12 +108,14 @@ export class UpdateTask implements IUpdateTaskUseCase {
 
         const updatedTask = await this.taskRepository.save(task);
 
+        const taskResponse = await this.taskResponseService.toResponse(updatedTask);
+
         this.realtimeService.emitToTeam(
             lead.teamId,
             "task:updated",
-            updatedTask,
+            taskResponse,
         );
 
-        return updatedTask;
+        return taskResponse;
     }
 }

@@ -10,7 +10,7 @@ import {
     GetTaskStatisticsDTO,
     TaskStatistics,
 } from "../../dtos/task/getTaskStatistics.dto";
-import { IGetTaskStatisticsUseCase } from "../../interfaces/services/task/IGetTaskStatisticsUseCase";
+import { IGetTaskStatisticsUseCase } from "../../interfaces/usecases/task/IGetTaskStatisticsUseCase";
 
 export class GetTaskStatistics
     implements IGetTaskStatisticsUseCase

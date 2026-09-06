@@ -1,9 +1,9 @@
-import { Task } from "../../../../domain/entities/Task.entity";
+import { TaskResponseDTO } from "../../../dtos/task/taskResponse.dto";
 import { UpdateTaskDTO } from "../../../dtos/task/updateTask.dto";
 
 export interface IUpdateTaskUseCase {
     execute(
         data: UpdateTaskDTO,
         userId: string,
-    ): Promise<Task>;
+    ): Promise<TaskResponseDTO>;
 }

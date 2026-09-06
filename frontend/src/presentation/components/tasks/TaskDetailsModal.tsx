@@ -66,7 +66,7 @@ const TaskDetailsModal = ({
               <User className="h-3.5 w-3.5" /> Assigned Member
             </span>
             <span className="font-semibold text-neutral-800 break-all">
-              {task.assignedTo}
+              {task.assignedToName}
             </span>
           </div>
 
@@ -75,7 +75,7 @@ const TaskDetailsModal = ({
               <User className="h-3.5 w-3.5" /> Creator
             </span>
             <span className="font-semibold text-neutral-800 break-all">
-              {task.createdBy}
+              {task.createdByName}
             </span>
           </div>
 
@@ -88,10 +88,10 @@ const TaskDetailsModal = ({
 
           <div>
             <span className="flex items-center gap-1 text-neutral-400 font-medium mb-1">
-              <Tag className="h-3.5 w-3.5" /> Team ID
+              <Tag className="h-3.5 w-3.5" /> Team
             </span>
             <span className="font-semibold text-neutral-800 break-all">
-              {task.teamId}
+              {task.teamName}
             </span>
           </div>
 

@@ -260,7 +260,13 @@ const taskSlice = createSlice({
       })
       .addCase(createTask.fulfilled, (state, action) => {
         state.loading = false;
-        state.tasks.unshift(action.payload);
+        const exists = state.tasks.some(
+          (task) => task.id === action.payload.id
+        );
+
+        if (!exists) {
+          state.tasks.unshift(action.payload);
+        }
       })
       .addCase(createTask.rejected, (state, action) => {
         state.loading = false;

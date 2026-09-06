@@ -6,18 +6,21 @@ import { AppError } from "../../../domain/errors/AppError";
 import { statusCode } from "../../constants/enums/statusCode";
 import { ICreateTaskUseCase } from "../../interfaces/usecases/task/ICreateTaskUseCase";
 import { IRealtimeService } from "../../interfaces/services/task/IRealtimeService";
+import { ITaskResponseService } from "../../interfaces/services/task/ITaskResponseService";
+import { TaskResponseDTO } from "../../dtos/task/taskResponse.dto";
 
 export class CreateTask implements ICreateTaskUseCase {
     constructor(
         private readonly taskRepository: ITaskRepository,
         private readonly userRepository: IUserRepository,
         private readonly realtimeService: IRealtimeService,
+        private readonly taskResponseService: ITaskResponseService,
     ) { }
 
     async execute(
         data: CreateTaskDTO,
         createdBy: string,
-    ): Promise<Task> {
+    ): Promise<TaskResponseDTO> {
         const creator = await this.userRepository.findById(createdBy);
 
         if (!creator) {
@@ -86,12 +89,14 @@ export class CreateTask implements ICreateTaskUseCase {
 
         const createdTask = await this.taskRepository.save(task);
 
+        const taskResponse =  await this.taskResponseService.toResponse(createdTask);
+
         this.realtimeService.emitToTeam(
             creator.teamId,
             "task:created",
-            createdTask,
+            taskResponse,
         );
 
-        return createdTask;
+        return taskResponse;
     }
 }

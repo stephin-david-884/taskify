@@ -7,7 +7,9 @@ import { IUserRepository } from "../../../domain/repositories/IUserRepository";
 import { statusCode } from "../../constants/enums/statusCode";
 import { IRealtimeService } from "../../interfaces/services/task/IRealtimeService";
 import { UpdateTaskStatusDTO } from "../../dtos/task/updateTaskStatus.dto";
-import { IUpdateTaskStatusUseCase } from "../../interfaces/services/task/IUpdateTaskStatusUseCase";
+import { IUpdateTaskStatusUseCase } from "../../interfaces/usecases/task/IUpdateTaskStatusUseCase";
+import { ITaskResponseService } from "../../interfaces/services/task/ITaskResponseService";
+import { TaskResponseDTO } from "../../dtos/task/taskResponse.dto";
 
 export class UpdateTaskStatus
     implements IUpdateTaskStatusUseCase {
@@ -15,12 +17,13 @@ export class UpdateTaskStatus
         private readonly taskRepository: ITaskRepository,
         private readonly userRepository: IUserRepository,
         private readonly realtimeService: IRealtimeService,
+        private readonly taskResponseService: ITaskResponseService,
     ) { }
 
     async execute(
         data: UpdateTaskStatusDTO,
         userId: string,
-    ) {
+    ): Promise<TaskResponseDTO> {
         const user = await this.userRepository.findById(userId);
 
         if (!user) {
@@ -91,12 +94,14 @@ export class UpdateTaskStatus
 
         const updatedTask = await this.taskRepository.save(task);
 
+        const taskResponse = await this.taskResponseService.toResponse(updatedTask);
+
         this.realtimeService.emitToTeam(
             user.teamId,
             "task:status-updated",
-            updatedTask,
+            taskResponse,
         );
 
-        return updatedTask;
+        return taskResponse;
     }
 }

@@ -1,21 +1,23 @@
-import { Task } from "../../../domain/entities/Task.entity";
 import { AppError } from "../../../domain/errors/AppError";
 import { ITaskRepository } from "../../../domain/repositories/ITaskRepository";
 import { IUserRepository } from "../../../domain/repositories/IUserRepository";
 import { statusCode } from "../../constants/enums/statusCode";
 import { GetTasksDTO } from "../../dtos/task/getTasks.dto";
-import { IGetTasksUseCase } from "../../interfaces/services/task/IGetTasksUseCase";
+import { TaskResponseDTO } from "../../dtos/task/taskResponse.dto";
+import { IGetTasksUseCase } from "../../interfaces/usecases/task/IGetTasksUseCase";
+import { ITaskResponseService } from "../../interfaces/services/task/ITaskResponseService";
 
 export class GetTasks implements IGetTasksUseCase {
     constructor(
         private readonly taskRepository: ITaskRepository,
         private readonly userRepository: IUserRepository,
+        private readonly taskResponseService: ITaskResponseService,
     ) { }
 
     async execute(
         _data: GetTasksDTO,
         userId: string,
-    ): Promise<Task[]> {
+    ): Promise<TaskResponseDTO[]> {
         const user = await this.userRepository.findById(userId);
 
         if (!user) {
@@ -33,15 +35,15 @@ export class GetTasks implements IGetTasksUseCase {
         }
 
         if (user.isLead()) {
-            return this.taskRepository.findByTeamId(
-                user.teamId,
-            );
+            const tasks = await this.taskRepository.findByTeamId(user.teamId);
+
+            return this.taskResponseService.toResponses(tasks);
         }
 
         if (user.isMember()) {
-            return this.taskRepository.findByAssigneeId(
-                user.getId(),
-            );
+            const tasks = await this.taskRepository.findByAssigneeId(user.getId());
+
+            return this.taskResponseService.toResponses(tasks);
         }
 
         throw new AppError(

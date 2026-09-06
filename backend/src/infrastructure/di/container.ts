@@ -29,17 +29,17 @@ import { SocketIORealtimeService } from "../services/task/SocketIORealtimeServic
 import { Server as SocketServer } from "socket.io";
 import { ICreateTaskUseCase } from "../../application/interfaces/usecases/task/ICreateTaskUseCase";
 import { CreateTask } from "../../application/usecases/task/CreateTask";
-import { IGetTaskUseCase } from "../../application/interfaces/services/task/IGetTaskUseCase";
+import { IGetTaskUseCase } from "../../application/interfaces/usecases/task/IGetTaskUseCase";
 import { GetTask } from "../../application/usecases/task/GetTask";
-import { IGetTasksUseCase } from "../../application/interfaces/services/task/IGetTasksUseCase";
+import { IGetTasksUseCase } from "../../application/interfaces/usecases/task/IGetTasksUseCase";
 import { GetTasks } from "../../application/usecases/task/GetTasks";
-import { IUpdateTaskUseCase } from "../../application/interfaces/services/task/IUpdateTaskUseCase";
+import { IUpdateTaskUseCase } from "../../application/interfaces/usecases/task/IUpdateTaskUseCase";
 import { UpdateTask } from "../../application/usecases/task/UpdateTask";
-import { IUpdateTaskStatusUseCase } from "../../application/interfaces/services/task/IUpdateTaskStatusUseCase";
+import { IUpdateTaskStatusUseCase } from "../../application/interfaces/usecases/task/IUpdateTaskStatusUseCase";
 import { UpdateTaskStatus } from "../../application/usecases/task/UpdateTaskStatus";
-import { IDeleteTaskUseCase } from "../../application/interfaces/services/task/IDeleteTaskUseCase";
+import { IDeleteTaskUseCase } from "../../application/interfaces/usecases/task/IDeleteTaskUseCase";
 import { DeleteTask } from "../../application/usecases/task/DeleteTask";
-import { IGetTaskStatisticsUseCase } from "../../application/interfaces/services/task/IGetTaskStatisticsUseCase";
+import { IGetTaskStatisticsUseCase } from "../../application/interfaces/usecases/task/IGetTaskStatisticsUseCase";
 import { GetTaskStatistics } from "../../application/usecases/task/GetTaskStatistics";
 import { TaskController } from "../../interfaces/controllers/task/TaskController";
 
@@ -50,6 +50,9 @@ const taskRepository = new TaskRepository();
 
 const hashService = new HashService();
 const tokenService = new TokenService();
+const realtimeService = new SocketIORealtimeService();
+
+const taskResponseService = new TaskResponseService(userRepository, teamRepository);
 
 // Use case
 const registerUser: IRegisterUserUsecase = new RegisterUser(
@@ -84,34 +87,39 @@ const getLeads: IGetLeadsUsecase = new GetLeads(
   userRepository,
 );
 
-const realtimeService = new SocketIORealtimeService();
 
 const createTask: ICreateTaskUseCase = new CreateTask(
   taskRepository,
   userRepository,
   realtimeService,
+  taskResponseService,
 );
 
 const getTask: IGetTaskUseCase = new GetTask(
   taskRepository,
   userRepository,
+  teamRepository,
+  
 );
 
 const getTasks: IGetTasksUseCase = new GetTasks(
   taskRepository,
   userRepository,
+  taskResponseService
 );
 
 const updateTask: IUpdateTaskUseCase = new UpdateTask(
   taskRepository,
   userRepository,
   realtimeService,
+  taskResponseService
 );
 
 const updateTaskStatus: IUpdateTaskStatusUseCase = new UpdateTaskStatus(
   taskRepository,
   userRepository,
   realtimeService,
+  taskResponseService
 );
 
 const deleteTask: IDeleteTaskUseCase = new DeleteTask(
@@ -127,6 +135,7 @@ const getTaskStatistics: IGetTaskStatisticsUseCase = new GetTaskStatistics(
 
 import { IGetTeamMembersUseCase } from "../../application/interfaces/usecases/auth/IGetTeamMembersUseCase";
 import { GetTeamMembers } from "../../application/usecases/auth/GetTeamMembers.auth";
+import { TaskResponseService } from "../services/task/TaskResponseService";
 
 // ... rest of imports
 const getTeamMembers: IGetTeamMembersUseCase = new GetTeamMembers(

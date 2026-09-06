@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { statusCode } from "../../../application/constants/enums/statusCode";
 import { ICreateTaskUseCase } from "../../../application/interfaces/usecases/task/ICreateTaskUseCase";
-import { IGetTaskUseCase } from "../../../application/interfaces/services/task/IGetTaskUseCase";
-import { IGetTasksUseCase } from "../../../application/interfaces/services/task/IGetTasksUseCase";
-import { IUpdateTaskUseCase } from "../../../application/interfaces/services/task/IUpdateTaskUseCase";
-import { IUpdateTaskStatusUseCase } from "../../../application/interfaces/services/task/IUpdateTaskStatusUseCase";
-import { IDeleteTaskUseCase } from "../../../application/interfaces/services/task/IDeleteTaskUseCase";
-import { IGetTaskStatisticsUseCase } from "../../../application/interfaces/services/task/IGetTaskStatisticsUseCase";
+import { IGetTaskUseCase } from "../../../application/interfaces/usecases/task/IGetTaskUseCase";
+import { IGetTasksUseCase } from "../../../application/interfaces/usecases/task/IGetTasksUseCase";
+import { IUpdateTaskUseCase } from "../../../application/interfaces/usecases/task/IUpdateTaskUseCase";
+import { IUpdateTaskStatusUseCase } from "../../../application/interfaces/usecases/task/IUpdateTaskStatusUseCase";
+import { IDeleteTaskUseCase } from "../../../application/interfaces/usecases/task/IDeleteTaskUseCase";
+import { IGetTaskStatisticsUseCase } from "../../../application/interfaces/usecases/task/IGetTaskStatisticsUseCase";
 import { asyncHandler } from "../../http/asyncHandler";
 import { sendSuccess } from "../../http/response";
 import { AppError } from "../../../domain/errors/AppError";

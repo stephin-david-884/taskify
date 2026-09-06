@@ -4,7 +4,7 @@ import { IUserRepository } from "../../../domain/repositories/IUserRepository";
 import { statusCode } from "../../constants/enums/statusCode";
 import { IRealtimeService } from "../../interfaces/services/task/IRealtimeService";
 import { DeleteTaskDTO } from "../../dtos/task/deleteTask.dto";
-import { IDeleteTaskUseCase } from "../../interfaces/services/task/IDeleteTaskUseCase";
+import { IDeleteTaskUseCase } from "../../interfaces/usecases/task/IDeleteTaskUseCase";
 
 export class DeleteTask implements IDeleteTaskUseCase {
     constructor(

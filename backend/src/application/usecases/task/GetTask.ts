@@ -1,21 +1,25 @@
 import { Task } from "../../../domain/entities/Task.entity";
 import { AppError } from "../../../domain/errors/AppError";
 import { ITaskRepository } from "../../../domain/repositories/ITaskRepository";
+import { ITeamRepository } from "../../../domain/repositories/ITeamRepository";
 import { IUserRepository } from "../../../domain/repositories/IUserRepository";
 import { statusCode } from "../../constants/enums/statusCode";
 import { GetTaskDTO } from "../../dtos/task/getTask.dto";
-import { IGetTaskUseCase } from "../../interfaces/services/task/IGetTaskUseCase";
+import { TaskResponseDTO } from "../../dtos/task/taskResponse.dto";
+import { IGetTaskUseCase } from "../../interfaces/usecases/task/IGetTaskUseCase";
+import { toTaskResponse } from "../../mappers/TaskResponse.mapper";
 
 export class GetTask implements IGetTaskUseCase {
     constructor(
         private readonly taskRepository: ITaskRepository,
         private readonly userRepository: IUserRepository,
-    ) {}
+        private readonly teamRepository: ITeamRepository,
+    ) { }
 
     async execute(
         data: GetTaskDTO,
         userId: string,
-    ): Promise<Task> {
+    ): Promise<TaskResponseDTO> {
         const user = await this.userRepository.findById(userId);
 
         if (!user) {
@@ -50,6 +54,44 @@ export class GetTask implements IGetTaskUseCase {
             );
         }
 
-        return task;
+        const assignedMember = await this.userRepository.findById(
+            task.assignedTo,
+        );
+
+        if (!assignedMember) {
+            throw new AppError(
+                "Assigned User not found",
+                statusCode.BAD_REQUEST,
+            )
+        }
+
+        const creator = await this.userRepository.findById(
+            task.createdBy,
+        );
+
+        if (!creator) {
+            throw new AppError(
+                "Lead not found",
+                statusCode.BAD_REQUEST,
+            )
+        }
+
+        const team = await this.teamRepository.findById(
+            task.teamId,
+        );
+
+        if (!team) {
+            throw new AppError(
+                "Team not found",
+                statusCode.BAD_REQUEST,
+            )
+        }
+
+        return toTaskResponse(
+            task,
+            assignedMember,
+            creator,
+            team,
+        );
     }
 }
