@@ -8,6 +8,7 @@ import UserProtectedRoute from "./presentation/routes/UserProtectedRoute";
 const Home = lazy(() => import('./presentation/pages/home/Home'));
 const Dashboard = lazy(() => import('./presentation/pages/dashboard/Dashboard'));
 const Tasks = lazy(() => import('./presentation/pages/task/Task'));
+const PageNotFound = lazy(() => import('./presentation/pages/common/PageNotFound'));
 
 const App = () => {
 
@@ -50,7 +51,7 @@ const App = () => {
             <Route path="/tasks" element={<Tasks />} />
           </Route>
 
-
+          <Route path="*" element={<PageNotFound />} />    
         </Routes>
       </Suspense>
     </>
