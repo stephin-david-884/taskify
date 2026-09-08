@@ -55,6 +55,12 @@ const TaskCardList = ({
                 <p className="mt-1 line-clamp-2 text-xs text-neutral-500">
                   {task.description}
                 </p>
+                <p className="mt-2 text-xs font-medium text-neutral-500">
+                  {isLead ? "Assigned to: " : "Lead: "}
+                  <span className="font-semibold text-neutral-700">
+                    {isLead ? task.assignedToName : task.createdByName}
+                  </span>
+                </p>
               </div>
             </div>
 

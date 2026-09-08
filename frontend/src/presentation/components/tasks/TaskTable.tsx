@@ -31,6 +31,9 @@ const TaskTable = ({
           <thead className="border-b border-neutral-200 bg-neutral-50/80 text-xs font-semibold uppercase tracking-wider text-neutral-500">
             <tr>
               <th scope="col" className="px-6 py-4">Task Details</th>
+              <th scope="col" className="px-6 py-4">
+                {isLead ? "Assignee" : "Lead"}
+              </th>
               <th scope="col" className="px-6 py-4">Priority</th>
               <th scope="col" className="px-6 py-4">Status</th>
               <th scope="col" className="px-6 py-4">Due Date</th>
@@ -58,6 +61,15 @@ const TaskTable = ({
                       </button>
                       <p className="mt-0.5 line-clamp-1 text-xs text-neutral-500">
                         {task.description}
+                      </p>
+                    </div>
+                  </td>
+
+                  {/* Assignee / Lead */}
+                  <td className="px-6 py-4">
+                    <div className="max-w-40">
+                      <p className="text-sm font-semibold text-neutral-900 truncate">
+                        {isLead ? task.assignedToName : task.createdByName}
                       </p>
                     </div>
                   </td>
